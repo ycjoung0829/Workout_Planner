@@ -44,7 +44,7 @@ def run(width=300, height=300):
 
     class App(Frame):
         def __init__(self, *args, **kwargs):
-            Frame.__init__(self, width=300, height=300, *args, **kwargs)
+            Frame.__init__(self, *args, **kwargs)
             home = Home(self)
             routine = Routine(self)
             calendar = Calendar(self)
@@ -58,7 +58,7 @@ def run(width=300, height=300):
             #buttonframeH.pack(side="top", anchor = "w", fill="x", expand=False)
             #buttonframeR.pack(side="left", anchor = "w", fill="x", expand=False)
             #buttonframeC.pack(side="bottom", anchor = "w", fill="x", expand=False)
-            buttonframe.pack(side="top", fill="x", expand=False)
+            buttonframe.pack(side="top", fill="none", expand=False)
             
             container.pack(side="top", fill="both", expand=True)
 
@@ -66,9 +66,9 @@ def run(width=300, height=300):
             routine.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
             calendar.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
 
-            b1 = Button(buttonframe, text="Home", font = FONT, command=home.switch)
-            b2 = Button(buttonframe, text="Routine", font = FONT, command=routine.switch)
-            b3 = Button(buttonframe, text="Calendar", font = FONT, command=calendar.switch)
+            b1 = Button(buttonframe, text="Home", font = FONT, fg="white", bg='black', command=home.switch)
+            b2 = Button(buttonframe, text="Routine", font = FONT, fg="white", bg='black', command=routine.switch)
+            b3 = Button(buttonframe, text="Calendar", font = FONT, fg="white", bg='black', command=calendar.switch)
 
             b1.pack(side="left")
             b2.pack(side="left")
@@ -77,8 +77,11 @@ def run(width=300, height=300):
             home.switch()
 
     root = Tk()
-    app = App(root)
-    app.pack(side="top", fill="both", expand=True)
+    img = PhotoImage(file="barbell_icon.png")
+    label = Label(root, image = img)
+    label.place(x=0,y=0)
+    # app = App(root)
+    # app.pack(side="top", fill="both", expand=True)
     root.wm_geometry("%dx%d" % (width, height))
     root.mainloop()
     
