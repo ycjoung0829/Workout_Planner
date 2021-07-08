@@ -1,4 +1,5 @@
 from tkinter import *
+from PIL import ImageTk, Image
 
 
 FONT = ("Verdana", 30)
@@ -21,6 +22,7 @@ class Page(Frame):
 class Home(Page):
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
+        
         label = Label(self, text=Htext, font = Hfont)
         label.pack(side="top", fill="both", expand=True)
 
@@ -59,8 +61,10 @@ def run(width=300, height=300):
             home.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
             routine.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
             calendar.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+            
 
             b1 = Button(buttonframe, text="Home", font = FONT, fg="white", bg='black', command=home.switch)
+            
             b2 = Button(buttonframe, text="Routine", font = FONT, fg="white", bg='black', command=routine.switch)
             b3 = Button(buttonframe, text="Calendar", font = FONT, fg="white", bg='black', command=calendar.switch)
 
@@ -72,13 +76,18 @@ def run(width=300, height=300):
 
     root = Tk()
     root.geometry("%dx%d" % (width, height))
-    img = PhotoImage(file="barbell-512.png")
-    # label = Label(root, image = img)
-    # label.place(x=0,y=0)
-    canvas = Canvas(root, width = 512, height = 512)
-    canvas.pack(fill="both")
-    canvas.create_image(0,0,image=img, anchor="nw")
-    app = App(canvas)
+    
+    canvas = Canvas(root)
+    canvas.create_rectangle(0,0,20,20,fill="red")
+    
+    image = Image.open("barbell-512.png")
+    image = image.resize((width//2,height//2), Image.ANTIALIAS)
+    
+    img = ImageTk.PhotoImage(image)
+    canvas.create_image(width//2,height//2,image=img)
+    canvas.pack(side="bottom",anchor="s",fill="both",expand=True)
+    
+    app = App(root)
     app.pack(side="top", fill="both", expand=True)
     root.mainloop()
     
