@@ -1,96 +1,140 @@
+
 from tkinter import *
 from PIL import ImageTk, Image
 
 
-FONT = ("Verdana", 30)
-Hfont = ("Verdana", 30)
-Htext = "Home"
-Rfont = ("Verdana", 30)
-Rtext = "Routine"
-Cfont = ("Verdana", 30)
-Ctext = "Calendar"
+############## HELPER FUNCTIOn ################
+
+### resizes a picture into a certain width and height 
+def editPic(image, width, height):
+    img = Image.open(image)
+    img = img.resize((width, height), Image.ANTIALIAS)
+    img = ImageTk.PhotoImage(img)
+    return img
+
+##############################################
 
 
-class Page(Frame):
-    def __init__(self, *args, **kwargs):
-        Frame.__init__(self, *args, **kwargs)
+class App(Tk):
+    def __init__(self):
+        Tk.__init__(self)
+        self.mainPage= None
+        self.allPages = dict()
+        self.switch(Home)
 
-    def switch(self):
-        self.lift()
+    def switch(self, page):
 
+        if self.mainPage:
+            self.mainPage.pack_forget()
 
-class Home(Page):
-    def __init__(self, *args, **kwargs):
-        Page.__init__(self, *args, **kwargs)
+        canvas = self.allPages.get(page, False)
+
+        if canvas == False:
+            canvas = page(self)
+            self.allPages[page] = canvas
+
+        canvas.pack()
+        self.mainPage = canvas
+
         
-        label = Label(self, text=Htext, font = Hfont)
-        label.pack(side="top", fill="both", expand=True)
+        
+class Home(Frame):
+    def __init__(self, master, *args, **kwargs):
+        Frame.__init__(self, master, *args, **kwargs)
+        self.canvas = Canvas(self, bg="white",width = 512, height = 512)
+
+        self.home_image = editPic("home_icon.png", 50, 50)
+        self.routine_image = editPic("routine_icon.png", 50,50)
+        self.calendar_image = editPic("calendar_icon.png", 50,50)
+        
+        
+        routine = Button(self, image = self.routine_image,
+              command=lambda: master.switch(Routine))
+        
+        calendar = Button(self, image=self.calendar_image,
+              command=lambda: master.switch(Calendar))
+        
+        home = Button(self, image=self.home_image,
+              command=lambda: master.switch(Home))
+        
+        home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
+        routine_window = self.canvas.create_window(0,60,anchor="nw", window=routine)
+        calendar_window = self.canvas.create_window(0,120,anchor="nw", window=calendar)
+        
+        
+        
+        
+        self.image = ImageTk.PhotoImage(file="barbell-512.png")
+        self.canvas.create_image(0,0, image=self.image, anchor="nw")
+        
+        self.canvas.pack(expand=False, fill="both")
 
 
-class Routine(Page):
-    def __init__(self, *args, **kwargs):
-        Page.__init__(self, *args, **kwargs)
-        label = Label(self, text=Rtext, font = Rfont)
-        label.pack(side="top", fill="both", expand=True)
+class Routine(Frame):
+    def __init__(self, master, *args, **kwargs):
+        Frame.__init__(self, master, *args, **kwargs)
+        self.canvas = Canvas(self, bg="blue",width = 512, height = 512)
+
+        self.home_image = editPic("home_icon.png", 50, 50)
+        self.routine_image = editPic("routine_icon.png", 50,50)
+        self.calendar_image = editPic("calendar_icon.png", 50,50)
+        
+        
+        routine = Button(self, image = self.routine_image,
+              command=lambda: master.switch(Routine))
+        
+        calendar = Button(self, image=self.calendar_image,
+              command=lambda: master.switch(Calendar))
+        
+        home = Button(self, image=self.home_image,
+              command=lambda: master.switch(Home))
+        
+        home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
+        routine_window = self.canvas.create_window(0,60,anchor="nw", window=routine)
+        calendar_window = self.canvas.create_window(0,120,anchor="nw", window=calendar)
+        
+        
+        
+        
+        self.image = ImageTk.PhotoImage(file="barbell-512.png")
+        self.canvas.create_image(0,0, image=self.image, anchor="nw")
+        
+        self.canvas.pack(expand=False, fill="both")
 
 
-class Calendar(Page):
-    def __init__(self, *args, **kwargs):
-        Page.__init__(self, *args, **kwargs)
-        label = Label(self, text=Ctext, font = Cfont)
-        label.pack(side="top", fill="both", expand=True)
+class Calendar(Frame): 
+    def __init__(self, master, *args, **kwargs):
+        
+        Frame.__init__(self, master, *args, **kwargs)
+        self.canvas = Canvas(self, bg="yellow",width = 512, height = 512)
 
+        self.home_image = editPic("home_icon.png", 50, 50)
+        self.routine_image = editPic("routine_icon.png", 50,50)
+        self.calendar_image = editPic("calendar_icon.png", 50,50)
+        
+        
+        routine = Button(self, image = self.routine_image,
+              command=lambda: master.switch(Routine))
+        
+        calendar = Button(self, image=self.calendar_image,
+              command=lambda: master.switch(Calendar))
+        
+        home = Button(self, image=self.home_image,
+              command=lambda: master.switch(Home))
+        
+        home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
+        routine_window = self.canvas.create_window(0,60,anchor="nw", window=routine)
+        calendar_window = self.canvas.create_window(0,120,anchor="nw", window=calendar)
+        
+        
+        
+        
+        self.image = ImageTk.PhotoImage(file="barbell-512.png")
+        self.canvas.create_image(0,0, image=self.image, anchor="nw")
+        
+        self.canvas.pack(expand=False, fill="both")
+        
 
-def run(width=300, height=300):
-
-    class App(Frame):
-        def __init__(self, *args, **kwargs):
-            Frame.__init__(self, *args, **kwargs)
-            home = Home(self)
-            routine = Routine(self)
-            calendar = Calendar(self)
-
-            buttonframe = Frame(self)
-            
-            container = Frame(self)
-            
-            buttonframe.pack(side="top", fill="none", expand=False)
-            
-            container.pack(side="top", fill="both", expand=True)
-
-            home.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
-            routine.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
-            calendar.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
-            
-
-            b1 = Button(buttonframe, text="Home", font = FONT, fg="white", bg='black', command=home.switch)
-            
-            b2 = Button(buttonframe, text="Routine", font = FONT, fg="white", bg='black', command=routine.switch)
-            b3 = Button(buttonframe, text="Calendar", font = FONT, fg="white", bg='black', command=calendar.switch)
-
-            b1.pack(side = "left", pady = 2)
-            b2.pack(side = "left", pady = 2)
-            b3.pack(side = "left", pady = 2)
-
-            home.switch()
-
-    root = Tk()
-    root.geometry("%dx%d" % (width, height))
-    
-    canvas = Canvas(root)
-    canvas.create_rectangle(0,0,20,20,fill="red")
-    
-    image = Image.open("barbell-512.png")
-    image = image.resize((width//2,height//2), Image.ANTIALIAS)
-    
-    img = ImageTk.PhotoImage(image)
-    canvas.create_image(width//2,height//2,image=img)
-    canvas.pack(side="bottom",anchor="s",fill="both",expand=True)
-    
-    app = App(root)
-    app.pack(side="top", fill="both", expand=True)
-    root.mainloop()
-    
-
-
-run(512, 512)
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
