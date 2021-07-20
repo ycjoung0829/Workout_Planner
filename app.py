@@ -1,6 +1,9 @@
 
 from tkinter import *
+from tkinter import ttk
+from tkinter.ttk import *
 from PIL import ImageTk, Image
+
 
 
 ############## HELPER FUNCTIOn ################
@@ -13,7 +16,8 @@ def editPic(image, width, height):
     return img
 
 ##############################################
-
+WIDTH = 414
+HEIGHT = 736
 
 class App(Tk):
     def __init__(self):
@@ -41,30 +45,29 @@ class App(Tk):
 class Home(Frame):
     def __init__(self, master, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
-        self.canvas = Canvas(self, bg="white",width = 512, height = 512)
-
-        self.home_image = editPic("home_icon.png", 50, 50)
-        self.routine_image = editPic("routine_icon.png", 50,50)
-        self.calendar_image = editPic("calendar_icon.png", 50,50)
+        self.canvas = Canvas(self, bg="white",width = WIDTH, height = HEIGHT)
+    
+        self.home_image = editPic("home_icon.png", HEIGHT//3, HEIGHT//3)
+        self.routine_image = editPic("workout_pic.png", HEIGHT//3,HEIGHT//3)
+        self.calendar_image = editPic("calendar_icon.png", HEIGHT//3,HEIGHT//3)
         
-        
-        routine = Button(self, image = self.routine_image,
+        routine = ttk.Button(self,image = self.routine_image,
               command=lambda: master.switch(Routine))
+        routine.pack(fill="x")
         
-        calendar = Button(self, image=self.calendar_image,
+        calendar = ttk.Button(self, image=self.calendar_image,
               command=lambda: master.switch(Calendar))
         
-        home = Button(self, image=self.home_image,
+        home = ttk.Button(self,image=self.home_image,
               command=lambda: master.switch(Home))
         
-        home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
-        routine_window = self.canvas.create_window(0,60,anchor="nw", window=routine)
-        calendar_window = self.canvas.create_window(0,120,anchor="nw", window=calendar)
+        home_window = self.canvas.create_window(WIDTH//2,0, anchor = "n", window=home)
+        routine_window = self.canvas.create_window(WIDTH//2,HEIGHT//3, anchor = "n", window=routine)
+        calendar_window = self.canvas.create_window(WIDTH//2,HEIGHT//3*2, anchor = "n", window=calendar)
         
         
-        
-        
-        self.image = ImageTk.PhotoImage(file="barbell-512.png")
+    
+        self.image = editPic("workout_pic.png", WIDTH, WIDTH)
         self.canvas.create_image(0,0, image=self.image, anchor="nw")
         
         self.canvas.pack(expand=False, fill="both")
@@ -73,20 +76,20 @@ class Home(Frame):
 class Routine(Frame):
     def __init__(self, master, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
-        self.canvas = Canvas(self, bg="blue",width = 512, height = 512)
+        self.canvas = Canvas(self,width = WIDTH, height = HEIGHT)
 
         self.home_image = editPic("home_icon.png", 50, 50)
         self.routine_image = editPic("routine_icon.png", 50,50)
         self.calendar_image = editPic("calendar_icon.png", 50,50)
         
         
-        routine = Button(self, image = self.routine_image,
+        routine = ttk.Button(self, image = self.routine_image,
               command=lambda: master.switch(Routine))
         
-        calendar = Button(self, image=self.calendar_image,
+        calendar = ttk.Button(self, image=self.calendar_image,
               command=lambda: master.switch(Calendar))
         
-        home = Button(self, image=self.home_image,
+        home = ttk.Button(self, image=self.home_image,
               command=lambda: master.switch(Home))
         
         home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
@@ -95,31 +98,28 @@ class Routine(Frame):
         
         
         
-        
-        self.image = ImageTk.PhotoImage(file="barbell-512.png")
+        self.image = editPic("workout_pic.png", WIDTH, WIDTH)
         self.canvas.create_image(0,0, image=self.image, anchor="nw")
-        
         self.canvas.pack(expand=False, fill="both")
-
 
 class Calendar(Frame): 
     def __init__(self, master, *args, **kwargs):
         
         Frame.__init__(self, master, *args, **kwargs)
-        self.canvas = Canvas(self, bg="yellow",width = 512, height = 512)
+        self.canvas = Canvas(self,width = WIDTH, height = HEIGHT)
 
         self.home_image = editPic("home_icon.png", 50, 50)
         self.routine_image = editPic("routine_icon.png", 50,50)
         self.calendar_image = editPic("calendar_icon.png", 50,50)
         
         
-        routine = Button(self, image = self.routine_image,
+        routine = ttk.Button(self, image = self.routine_image,
               command=lambda: master.switch(Routine))
         
-        calendar = Button(self, image=self.calendar_image,
+        calendar = ttk.Button(self, image=self.calendar_image,
               command=lambda: master.switch(Calendar))
         
-        home = Button(self, image=self.home_image,
+        home = ttk.Button(self, image=self.home_image,
               command=lambda: master.switch(Home))
         
         home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
@@ -129,7 +129,7 @@ class Calendar(Frame):
         
         
         
-        self.image = ImageTk.PhotoImage(file="barbell-512.png")
+        self.image = editPic("workout_pic.png", WIDTH, WIDTH)
         self.canvas.create_image(0,0, image=self.image, anchor="nw")
         
         self.canvas.pack(expand=False, fill="both")
