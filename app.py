@@ -15,14 +15,14 @@ def editPic(image, width, height):
     img = ImageTk.PhotoImage(img)
     return img
 
-def click(workout, routines):
-    routines.append(workout)
+# def click(workout, routines):
+#     routines.append(workout)
     
 
 ##############################################
 WIDTH = 414
 HEIGHT = 736
-routines = []
+count = 0
 
 
 class App(Tk):
@@ -31,6 +31,10 @@ class App(Tk):
         self.mainPage= None
         self.allPages = dict()
         self.switch(Home)
+        self.count = 0
+        self.routines = set()
+        self.txt = ""
+        self.createT = ""
 
     def switch(self, page):
 
@@ -45,6 +49,25 @@ class App(Tk):
 
         canvas.pack()
         self.mainPage = canvas
+    
+    
+    def click(self, canvas, workout):
+        self.routines.add(workout)
+
+        if self.count == 0:
+            self.txt += workout
+            self.createT = canvas.create_text(50, 400, anchor = "w", text = workout, font = ("Purisa", 30))
+            
+        elif self.count < 3:
+            
+            canvas.delete(self.createT)
+            for r in self.routines:
+                self.txt += ", " + r
+            self.createT = canvas.create_text(50, 400, anchor = "w", text =self.txt, font = ("Purisa", 30))
+            
+        self.count+=1
+            
+            
     
         
 class Home(Frame):
@@ -73,6 +96,7 @@ class Home(Frame):
         
         self.canvas.pack(expand=False, fill="both")
 
+        
 
 class Routine(Frame):
     def __init__(self, master, *args, **kwargs):
@@ -83,6 +107,7 @@ class Routine(Frame):
         self.routine_image = editPic("routine_icon.png", 50,50)
         self.calendar_image = editPic("calendar_icon.png", 50,50)
         
+        self.canvas.create_rectangle(0,0, WIDTH,HEIGHT, fill='white')
         
         routine = ttk.Button(self, image = self.routine_image,
               command=lambda: master.switch(Routine))
@@ -93,19 +118,26 @@ class Routine(Frame):
         home = ttk.Button(self, image=self.home_image,
               command=lambda: master.switch(Home))
         
-        
-        ##########body parts###############
+        ##########bicep###############
         
         self.bicep = editPic("bicep.png", WIDTH//2, WIDTH//2)
         
         bicep = ttk.Button(self, image = self.bicep,
-             command=lambda: click("bicep", routines))
+             command=lambda: master.click(self.canvas, "bicep"))
         
-        for routine in routines:
-            self.canvas.create_text(50, 500, text=routine)
         
         bicep_window = self.canvas.create_window(0,60,anchor="nw", window=bicep)
-        ###################################
+        
+        ##########chest###############
+        self.chest = editPic("chest_workout.png", WIDTH//2, WIDTH//2)
+        
+        chest = ttk.Button(self, image = self.chest,
+             command=lambda: master.click(self.canvas, "chest"))
+        
+        
+        chest_window = self.canvas.create_window(WIDTH//2,60,anchor="nw", window=chest)
+        
+        ##############################
         
         home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
         routine_window = self.canvas.create_window(60,0,anchor="nw", window=routine)
