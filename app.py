@@ -35,6 +35,7 @@ class App(Tk):
         self.routines = set()
         self.txt = ""
         self.createT = ""
+        self.hey = ""
 
     def switch(self, page):
 
@@ -49,23 +50,29 @@ class App(Tk):
 
         canvas.pack()
         self.mainPage = canvas
+        
     
     
     def click(self, canvas, workout):
-        self.routines.add(workout)
-
-        if self.count == 0:
-            self.txt += workout
-            self.createT = canvas.create_text(50, 400, anchor = "w", text = workout, font = ("Purisa", 30))
-            
-        elif self.count < 3:
-            
-            canvas.delete(self.createT)
-            for r in self.routines:
-                self.txt += ", " + r
-            self.createT = canvas.create_text(50, 400, anchor = "w", text =self.txt, font = ("Purisa", 30))
+        canvas.delete(self.hey)
+        self.txt = ""
+        if self.count < 3:
+            self.routines.add(workout)
             
         self.count+=1
+            
+        if self.count == 3:
+            for r in self.routines:
+                self.txt += r + ", "
+            self.createT = canvas.create_text(50, HEIGHT, anchor = "sw", text =self.txt, font = ("Purisa", 20))
+    
+    def erase(self, canvas):
+        canvas.delete(self.createT)
+        self.routines = set()
+        self.txt = ""
+        self.count = 0
+        
+        
             
             
     
@@ -102,6 +109,11 @@ class Routine(Frame):
     def __init__(self, master, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
         self.canvas = Canvas(self,width = WIDTH, height = HEIGHT)
+        
+        
+        ###buttons####
+        
+        
 
         self.home_image = editPic("home_icon.png", 50, 50)
         self.routine_image = editPic("routine_icon.png", 50,50)
@@ -117,6 +129,12 @@ class Routine(Frame):
         
         home = ttk.Button(self, image=self.home_image,
               command=lambda: master.switch(Home))
+        
+        clear = ttk.Button(self, text="clear",
+              command=lambda: master.erase(self.canvas))
+        
+        confirm = ttk.Button(self, text="confirm",
+              command=lambda: master.switch(Routine2))
         
         ##########bicep###############
         
@@ -137,11 +155,78 @@ class Routine(Frame):
         
         chest_window = self.canvas.create_window(WIDTH//2,60,anchor="nw", window=chest)
         
+        ##########shoulder############
+        self.shoulder = editPic("shoulder.png", WIDTH//2, WIDTH//2)
+        
+        shoulder = ttk.Button(self, image = self.shoulder,
+             command=lambda: master.click(self.canvas, "shoulder"))
+        
+        
+        shoulder_window = self.canvas.create_window(0,WIDTH//2+70,anchor="nw", window=shoulder)
+        ##########leg############
+        self.leg = editPic("leg.png", WIDTH//2, WIDTH//2)
+        
+        leg = ttk.Button(self, image = self.leg,
+             command=lambda: master.click(self.canvas, "leg"))
+        
+        
+        leg_window = self.canvas.create_window(WIDTH//2,WIDTH//2+70,anchor="nw", window=leg)
+        ##########tricep############
+        self.tricep = editPic("tricep.png", WIDTH//2, WIDTH//2)
+        
+        tricep = ttk.Button(self, image = self.tricep,
+             command=lambda: master.click(self.canvas, "tricep"))
+        
+        
+        tricep_window = self.canvas.create_window(0,2*WIDTH//2+70,anchor="nw", window=tricep)
+        ##########abs############
+        self.abs = editPic("abs.png", WIDTH//2, WIDTH//2)
+        
+        abs = ttk.Button(self, image = self.abs,
+             command=lambda: master.click(self.canvas, "abs"))
+        
+        
+        abs_window = self.canvas.create_window(WIDTH//2,2*WIDTH//2+70,anchor="nw", window=abs)
         ##############################
         
         home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
         routine_window = self.canvas.create_window(60,0,anchor="nw", window=routine)
         calendar_window = self.canvas.create_window(120,0,anchor="nw", window=calendar)
+        clear_window = self.canvas.create_window(240, 0, anchor="nw", window=clear)
+        confirm_window = self.canvas.create_window(300,0, anchor="nw", window=confirm)
+        
+        self.canvas.pack(expand=False, fill="both")
+
+class Routine2(Frame):
+    def __init__(self, master, *args, **kwargs):
+        Frame.__init__(self, master, *args, **kwargs)
+        self.canvas = Canvas(self,width = WIDTH, height = HEIGHT)
+        
+        
+        ###buttons####
+        
+        
+
+        self.home_image = editPic("home_icon.png", 50, 50)
+        self.routine_image = editPic("routine_icon.png", 50,50)
+        self.calendar_image = editPic("calendar_icon.png", 50,50)
+        
+        self.canvas.create_rectangle(0,0, WIDTH,HEIGHT, fill='white')
+        
+        routine = ttk.Button(self, image = self.routine_image,
+              command=lambda: master.switch(Routine))
+        
+        calendar = ttk.Button(self, image=self.calendar_image,
+              command=lambda: master.switch(Calendar))
+        
+        home = ttk.Button(self, image=self.home_image,
+              command=lambda: master.switch(Home))
+        
+        
+        home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
+        routine_window = self.canvas.create_window(60,0,anchor="nw", window=routine)
+        calendar_window = self.canvas.create_window(120,0,anchor="nw", window=calendar)
+        
         
         self.canvas.pack(expand=False, fill="both")
         
