@@ -204,51 +204,59 @@ class Routine(Frame):
 class Chest(Frame):
     def __init__(self, master, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
-        self.canvas = Canvas(self,width = WIDTH, height = HEIGHT)
-        ###buttons####
-        self.home_image = editPic("home_icon.png", 50, 50)
-        self.routine_image = editPic("routine.png", 50,50)
+        self.canvas = Canvas(self,width = WIDTH, height = HEIGHT, scrollregion=(0,0,WIDTH,HEIGHT*2))
         
-        self.canvas.create_rectangle(0,0, WIDTH,HEIGHT, fill='white')
+        vertibar = Scrollbar(self, orient=VERTICAL)
+        vertibar.pack(side=RIGHT, fill = Y)
+        vertibar.config(command=canvas.yview)
         
-        routine = ttk.Button(self, image = self.routine_image,
-              command=lambda: master.switch(Routine))
-        
-        home = ttk.Button(self, image=self.home_image,
-              command=lambda: master.switch(Home))
-        
-        
-        
-        home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
-        routine_window = self.canvas.create_window(60,0,anchor="nw", window=routine)
-        
-        #####################################
-        self.benchpress = editPic("chest_workout.png", WIDTH//2,WIDTH//2)
-        
-        benchpress = ttk.Button(self, image = self.benchpress)
-        
-        benchpress_window = self.canvas.create_window(0,50, anchor="nw", window=benchpress)
-        ########
-        self.dumbellpress = editPic("dumbell_press.png", WIDTH//2,WIDTH//2)
-        
-        dumbellpress = ttk.Button(self, image = self.dumbellpress)
-        
-        dumbellpresss_window = self.canvas.create_window(0,50+WIDTH//2, anchor="nw", window=dumbellpress)
-        ########
-        self.dumbellfly = editPic("dumbell_fly.png", WIDTH//2,WIDTH//2)
-        
-        dumbellfly = ttk.Button(self, image = self.dumbellfly)
-        
-        dumbellfly_window = self.canvas.create_window(0,50+WIDTH, anchor="nw", window=dumbellfly)
-        ########
-        self.incline = editPic("incline_bench.png", WIDTH//2,WIDTH//2)
-        
-        incline = ttk.Button(self, image = self.incline)
-        
-        incline_window = self.canvas.create_window(WIDTH//2,50, anchor="nw", window=incline)
-        ########
-        
+        self.canvas.config(yscrollcommand=vertibar.set)
         self.canvas.pack(expand=False, fill="both")
+        
+        ###buttons####
+        # self.home_image = editPic("home_icon.png", 50, 50)
+        # self.routine_image = editPic("routine.png", 50,50)
+        
+        # self.canvas.create_rectangle(0,0, WIDTH,HEIGHT, fill='white')
+        
+        # routine = ttk.Button(self, image = self.routine_image,
+        #       command=lambda: master.switch(Routine))
+        
+        # home = ttk.Button(self, image=self.home_image,
+        #       command=lambda: master.switch(Home))
+        
+        
+        
+        # home_window = self.canvas.create_window(0,0, anchor="nw", window=home)
+        # routine_window = self.canvas.create_window(60,0,anchor="nw", window=routine)
+        
+        # #####################################
+        # self.benchpress = editPic("chest_workout.png", WIDTH,WIDTH)
+        
+        # benchpress = ttk.Button(self, image = self.benchpress)
+        
+        # benchpress_window = self.canvas.create_window(0,60, anchor="nw", window=benchpress)
+        # ########
+        # self.dumbellpress = editPic("dumbell_press.png", WIDTH,WIDTH)
+        
+        # dumbellpress = ttk.Button(self, image = self.dumbellpress)
+        
+        # dumbellpresss_window = self.canvas.create_window(0,60+WIDTH, anchor="nw", window=dumbellpress)
+        # ########
+        # # self.dumbellfly = editPic("dumbell_fly.png", WIDTH,WIDTH)
+        
+        # # dumbellfly = ttk.Button(self, image = self.dumbellfly)
+        
+        # # dumbellfly_window = self.canvas.create_window(0,60+WIDTH, anchor="nw", window=dumbellfly)
+        # # ########
+        # # self.incline = editPic("incline_bench.png", WIDTH,WIDTH)
+        
+        # # incline = ttk.Button(self, image = self.incline)
+        
+        # # incline_window = self.canvas.create_window(WIDTH,60, anchor="nw", window=incline)
+        # # ########
+        
+        # self.canvas.pack(expand=False, fill="both")
           
 
 class Routine2(Frame):
